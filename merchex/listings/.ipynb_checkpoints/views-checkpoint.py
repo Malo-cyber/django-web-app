@@ -17,10 +17,10 @@ def hello(request):
 
 
 def about(request):
-    return HttpResponse('<h1>About us</h1> <p> On a de grands projet </p>')
+    return render(request, 'listings/about.html')
 
 def listing(request):
-    return HttpResponse('<h1>Listing</h1> <p> ici la liste des ingredient </p>')
+    return render(request, 'listings/listing.html')
 
 def contact(request):
-    return HttpResponse('<h1>Contact us</h1> <p> aller viens me faire monter le lait bebe </p>')
+    return render(request, 'listings/contact.html')

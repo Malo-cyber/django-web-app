@@ -1,10 +1,12 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from listings.models import Band, Listing
+from listings.forms import ContactUsForm, BandAddForm
 from django.shortcuts import render
+from django.core.mail import send_mail
 
 def bands_list(request):
     bands = Band.objects.all()
@@ -17,7 +19,35 @@ def listing(request):
     return render(request, 'listings/listing.html')
 
 def contact(request):
-    return render(request, 'listings/contact.html')
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+
+        if form.is_valid():
+            send_mail(subject=f'Message from {form.cleaned_data["name"] or "anonyme"} via MerchEx Contact Us form',
+            message=form.cleaned_data['message'],
+            from_email=form.cleaned_data['email'],
+            recipient_list=['admin@merchex.xyz','m.couvet@icloud.com'],)
+
+        return redirect('email-sent') 
+    else:
+        form = ContactUsForm()
+
+    return render(request, 'listings/contact.html',{'form' : form})
+
+def bands_add(request):
+    form = BandAddForm(request.POST)
+    if request.method == 'POST':
+        form = BandAddForm(request.POST)
+        if form.is_valid():
+            band = form.save()
+            return redirect('band-detail', band.id)
+
+    else:
+        form = BandAddForm()
+    return render(request, 'listings/bands_add.html', {'form' : form})
+
+def email_sent(request):
+    return render(request, 'listings/email_sent.html')
 
 def band_detail(request, id):  # notez le paramètre id supplémentaire
     band = Band.objects.get(id=id)

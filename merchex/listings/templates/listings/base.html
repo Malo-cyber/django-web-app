@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{% static 'listings/styles.css' %}" />
     </head>
     <body>
-        <nav>  <a href="{% url 'bands-list'%}">Groupes</a>  <a href="{% url 'contact'%}">Contact-us</a>  <a href="{% url 'bands-add'%}">Participer</a>  </nav>
+        <nav>  <a href="{% url 'bands-list'%}"> Groupes </a> - <a href="{% url 'contact'%}"> Contact-us </a> - <a href="{% url 'bands-add'%}"> Ajouter des groupes </a>  </nav>
         {% block content %}{% endblock %}
 
     </body>

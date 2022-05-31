@@ -35,7 +35,6 @@ def contact(request):
     return render(request, 'listings/contact.html',{'form' : form})
 
 def bands_add(request):
-    form = BandAddForm(request.POST)
     if request.method == 'POST':
         form = BandAddForm(request.POST)
         if form.is_valid():
@@ -46,9 +45,29 @@ def bands_add(request):
         form = BandAddForm()
     return render(request, 'listings/bands_add.html', {'form' : form})
 
+def band_change(request, id):
+    band = Band.objects.get(id=id)
+    if request.method =='POST':
+        form = BandAddForm(request.POST, instance = band)
+        if form.is_valid():
+            form.save()
+            return redirect('band-detail', band.id)
+    else:
+        form = BandAddForm(instance = band)
+    
+    return render(request, 'listings/band_change.html',{'form' : form})
+
 def email_sent(request):
     return render(request, 'listings/email_sent.html')
 
 def band_detail(request, id):  # notez le paramètre id supplémentaire
     band = Band.objects.get(id=id)
     return render(request, 'listings/band_detail.html', {'band': band})
+
+def band_delete(request, id):
+    band = Band.objects.get(id=id)
+
+    if request.method == 'POST':
+        band.delete()
+        return redirect('bands-list')
+    return render(request, 'listings/band_delete.html', {'band' : band})

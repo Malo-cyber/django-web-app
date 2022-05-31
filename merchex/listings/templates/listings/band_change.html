@@ -1,0 +1,13 @@
+{% extends "listings/base.html" %}
+{% block content %}
+
+<h1>Modification des goupes</h1>
+        <p>ici vous pouvez editer les groupes</p>
+
+<form action="" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Envoyer">
+</form>
+
+{% endblock %}
